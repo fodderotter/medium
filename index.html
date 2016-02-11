@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Medium clone</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<header>
+
+	</header>
+	<article>
+		<h1>React Components</h1>
+		<p>Components are the smallest, yet most fundamental part of React. They’re similar, in concepts, to things like widgets and modules. React defines itself as a <em>library for building user interfaces.</em> As such, when you think of a user interface you want to build (with React), you need to think of it in terms of the smallest possible components that you can define.</p>
+		<p>These components include code which defines how DOM elements are created and how users can interact with them. Components can be defined purely in JavaScript or they can be defined in a superset (or extended variation) of JavaScript called JSX. If you decide to use JSX for your component definitions, you may also need a compiler application, but we’ll get to that in a minute.</p>
+		<p>
+			<em>We’re going to be referring to <b>pure JavaScript</b> as <b>JS</b> and <b>the React version of JavaScript</b> as <b>JSX</b>.<br><br>
+			You can find the accompanying source-code, for this tutorial, at: <a href="https://github.com/formativ/tutorial-react-components">https://github.com/formativ/tutorial-react-components</a>.<br><br>
+			Please post any errors you find, or questions you have as comments on this article or as issues on GitHub.<br><br>
+			Thanks to <a href="https://twitter.com/floydophone">Pete Hunt</a> for helping to improve this!</em>
+		</p>
+
+		<h3>Embedded HTML</h3>
+
+		<p>If you’ve been developing websites for a while, you may have flinched when I spoke about using HTML within your JavaScript. For the longest time, a development paradigm has existed which says that you should split HTML and JavaScript. Words like <b>unobtrusive</b> have been repurposed to express this kind of separation. That is exactly how I felt, until I started working with React.</p>
+		<p>The reason this paradigm exists is to decrease coupling (how much things depend on each other) and increase cohesion (how well different things work together). So we have created an environment in which we try our best to make HTML (and templates) as free of logic as possible. We then need to attach behaviour to this in the form of external scripts.</p>
+		<p>There are trade-offs with this approach to doing things. For starters, it takes more effort trying to keep these two things separate. There are many template engines and languages. There are also many template parsers to handle them all. And yet these languages (with the exception of HTML) still seem to include a modicum of logical operations…</p>
+		<p>Additionally, when we need to modify the contents of a web page, via JavaScript, we have to know about HTML and/or templates. How else can we know what to display and where to display it? We could load external templates, via additional HTTP requests, but how would we know where to put it without some knowledge of the DOM? We could load templates embedded within special script tags, but we would first need to fetch the contents of those script tags.</p>
+		<p>This brings us to the biggest problem with the separation of HTML and JavaScript: The only way we can get elements to attach behaviour to, and read data from, is by knowing about HTML elements in the document. Libraries like jQuery are built around the idea that HTML elements are only a CSS selector away from JavaScript.</p>
+		<p>
+			<em>These points from from a presentation I found at: <a href="http://www.slideshare.net/floydophone/react-preso-v2">http://www.slideshare.net/floydophone/react-preso-v2</a>.</em>
+		</p>
+
+		<h3>Components</h3>
+
+		<p>Hopefully you’re willing to try this whole embedded HTML thing. In case not, I will create JS examples along with the JSX examples in this tutorial Let’s look at a simple component, just to get a feel for how one defines them:</p>
+		<p>The same code, in pure JavaScript looks much the same:</p>
+		<p>This is possible because JSX isn’t run directly in the browser. It may look that way in some examples, but there’s a script which converts JSX syntax into JS. For this to work, all the special JSX syntax needs to have a JS implementation. When you’re developing in JSX, you’re really just developing in an extended version of JavaScript.</p>
+		<p>You may also notice that the comment we began with, which had <b>@jsx React.DOM</b> in it, wasn’t required in the JS implementation. This is because the parser needs to see that in order for it to convert the JSX syntax to JS. Whether you are loading JSX from script elements within the same document, or loading external JSX scripts, you should always include this comment at the top of the script file.</p>
+		<p>
+			<em>The <b>@jsx</b> directive will allow you to run the parser tool on all your JS and JSX scripts, affecting only the JSX scripts.</em>
+		</p>
+		<p>Ignoring the <b>React.DOM.div</b> stuff, there’s not a lot to defining a component. Components will most often generate HTML for an interface. This is why we defined a <b>render()</b> method (on the JSON object we passed to the <b>React.createClass()</b> method).</p>
+		<p>
+			<em>Don’t be confused by the empty JSON object we pass to the <b>HelloWorld()</b> method. This gets handled in a different way, which we’ll see in later tutorials.</em>
+		</p>
+		<p>When we return, from within a <b>render()</b> method, we’re showing React what we want to component’s generated HTML to look like. There are a few different kinds of data that can be returned from within a <b>render()</b> method, but you will most often see DOM elements (or components) being returned.</p>
+		<p>
+			<em>You can find more examples of this in the React download, at: <a href="http://facebook.github.io/react/downloads.html">http://facebook.github.io/react/downloads.html</a>.</em>
+		</p>
+
+		<h3>Rendering Multiple Components</h3>
+
+		<p>Another common question is how to return multiple components from within a single <b>render()</b> method. The trick is that only one component can be returned, at a time. To return multiple, they must be wrapped within a container element. This is because of how the JS methods work. Let’s look at some JSX code</p>
+		<p>This looks harmless enough. Instead of returning a single span, we want to return two. Look back to the previous JS implementation to see if you can figure out what’s wrong with this.</p>
+		<p>If we were to try and imagine what this would look like in JS (because no compiler should allow that), it might look something like this:</p>
+		<p>You see what’s happening with the two calls to the <b>React.DOM.span()</b> method? Without something to wrap those elements, in a sensible manner, all we can expect is an error. So how can we achieve this? We can wrap them in a container element:</p>
+		<p>This will work, and translates into a reasonable JS equivalent:</p>
+		<p>Wrapping the span elements in a container div element equates to them being passed as children in an array.</p>
+		<p>
+			<em>Hopefully you’re beginning to see the value of JSX over the traditional JavaScript approach. Considering you’re still talking about div’s and span’s, it boils down to the same thing. Only shorter.</em>
+		</p>
+
+		<h3>Compiling JSX</h3>
+
+		<p>If you look at the accompanying source-code, you will see how easy it is to embed and use JSX in your web pages. If you plan on using JSX in production systems, you will no doubt consider compiling the JSX files to JS files. There’s a tool you can use for this, and to install it you need to run the command:</p>
+		<p>
+			<em>This assumes you already have NodeJS and NPM installed. If not, there are <a href="http://nodejs.org">resources to teach you how to do that.</a></em></p>
+		<p>This command will watch for file changes, in the <b>src</b>/ directory, and compile the corresponding <b>.js</b> files into the <b>build</b>/ directory. There are other uses for this command, but that’s a subject for another time!</p>
+		<p>
+			<em>You can find more information, about the tools available, at: <a href="http://facebook.github.io/react/docs/tooling-integration.html"><b>http://facebook.github.io/react/docs/tooling-integration.html</b></a>.</em>
+		</p>
+
+		<h3>Conclusion</h3>
+
+		<p>Components are at the heart of React, and understanding them is essential to understanding how to build solid React interfaces. We’ve taken a brief look at a few examples, but there’s so much more to components. Stay tuned!</p>
+		<p>If you enjoyed this tutorial; it would be helpful if you could click the <b>Recommend</b> button and share it with other developers.</p>
+
+		<div>
+			<div>
+				<div viewBox="0 0 29 29" width="29" height="29"><img src="http://i.imgur.com/G6E41Pq.png"></div>
+				<div viewBox="0 0 29 29" width="29" height="29"><img src="http://i.imgur.com/ZKU4jP2.png"></div>
+			</div>
+			<div>
+				<div viewBox="0 0 29 29" width="29" height="29"><img src="http://i.imgur.com/5V5cClj.png"></div>
+				<div viewBox="0 0 29 29" width="29" height="29"><img src="http://i.imgur.com/HKG0cP7.png"></div>
+				<div viewBox="0 0 29 29" width="29" height="29"><img src="http://i.imgur.com/lK2ayIX.png"></div>
+			</div>
+		</div>
+		<hr>
+		<div class="additional">
+			<div>
+				<div><a href="https://medium.com/@assertchris?source=footer_card"><img src="https://cdn-images-1.medium.com/fit/c/60/60/1*oZu4yGg3LiS4YBe_HnOKew.jpeg" class="firstimg"></a></div>
+				<div>Christopher Pitt <br>Programming -> <br>Robotics -> Minecraft</div>
+				<div class="button">Follow</div>
+				</div>
+			<div>
+				<div><a href="https://medium.com/react-tutorials?source=footer_card"><img src="https://cdn-images-1.medium.com/fit/c/60/60/1*bs9PbxDndAW7mmqve3EQ-w.jpeg"></a></div>
+				<div>React Tutorials <br>A series of quick tutorials <br>on React.</div>
+				<div class="button">Follow</div>
+			</div>
+		</div>
+	</article>
+</body>
+</html>
