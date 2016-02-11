@@ -13,6 +13,7 @@ article p {
 h1 {
 	font-size: 300%;
 	margin: 0;
+	clear:both;
 }
 h3 {
 	font-size: 200%;
@@ -130,4 +131,25 @@ footer > div {
 footer .button:first-child {
 	background-color: #02B875;
 	color: white;	
+}
+header { 
+	display:flex;
+	flex-direction:row;
+	justify-content:space-between;
+}
+.buttonContainer {
+
+}
+header p {
+	display:inline-block;
+	text-decoration: none;
+}
+article div p {
+	display:inline-block;
+}
+.firstProfile {
+	float:left;
+}
+.firstProfile p {
+	float:left;
 }
